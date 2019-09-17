@@ -1,5 +1,0 @@
-C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/uno_CORE.dir
-C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/kLineCan.dir
-C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/kLineCan-size.dir
-C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/rebuild_cache.dir

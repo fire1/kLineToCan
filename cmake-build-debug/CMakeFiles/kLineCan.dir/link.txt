@@ -1,1 +1,0 @@
-C:\WinAVR\bin\avr-g++.exe   -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD  -w -Os -Wl,--gc-sections -w -Os -Wl,--gc-sections -mmcu=atmega328p  CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj  -o kLineCan.elf  libuno_CORE.a -lc -lm 
