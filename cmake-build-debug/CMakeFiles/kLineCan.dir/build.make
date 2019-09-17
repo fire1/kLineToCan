@@ -33,19 +33,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe" -E remove -f
+RM = "C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Admin\Documents\Arduino\kLineToCan
+CMAKE_SOURCE_DIR = "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug
+CMAKE_BINARY_DIR = "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/kLineCan.dir/depend.make
@@ -57,21 +57,21 @@ include CMakeFiles/kLineCan.dir/progress.make
 include CMakeFiles/kLineCan.dir/flags.make
 
 kLineCan_kLineToCan.ino.cpp: ../kLineToCan.ino
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Regnerating kLineToCan.ino Sketch"
-	"C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe" C:/Users/Admin/Documents/Arduino/kLineToCan
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir="C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Regnerating kLineToCan.ino Sketch"
+	"C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe" "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan"
 
 CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj: CMakeFiles/kLineCan.dir/flags.make
 CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj: kLineCan_kLineToCan.ino.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj"
-	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.obj -c C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj"
+	C:\WinAVR\bin\avr-g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.obj -c "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp"
 
 CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.i"
-	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp > CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.i
+	C:\WinAVR\bin\avr-g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp" > CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.i
 
 CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.s"
-	C:\PROGRA~2\Arduino\hardware\tools\avr\bin\AVR-G_~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp -o CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.s
+	C:\WinAVR\bin\avr-g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\kLineCan_kLineToCan.ino.cpp" -o CMakeFiles\kLineCan.dir\kLineCan_kLineToCan.ino.cpp.s
 
 CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj.requires:
 
@@ -95,14 +95,14 @@ kLineCan.elf: CMakeFiles/kLineCan.dir/kLineCan_kLineToCan.ino.cpp.obj
 kLineCan.elf: CMakeFiles/kLineCan.dir/build.make
 kLineCan.elf: libuno_CORE.a
 kLineCan.elf: CMakeFiles/kLineCan.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable kLineCan.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable kLineCan.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\kLineCan.dir\link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating EEP image"
-	"C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\avr-objcopy.exe" -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep
+	C:\WinAVR\bin\avr-objcopy.exe -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf" "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep"
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating HEX image"
-	"C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\avr-objcopy.exe" -O ihex -R .eeprom C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.hex
+	C:\WinAVR\bin\avr-objcopy.exe -O ihex -R .eeprom "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf" "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.hex"
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Calculating image size"
-	"C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe" -DFIRMWARE_IMAGE=C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf -DMCU=atmega328p -DEEPROM_IMAGE=C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep -P C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/FirmwareSize.cmake
+	"C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe" "-DFIRMWARE_IMAGE=C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf" -DMCU=atmega328p "-DEEPROM_IMAGE=C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep" -P "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/FirmwareSize.cmake"
 
 # Rule to build all files generated by this target.
 CMakeFiles/kLineCan.dir/build: kLineCan.elf
@@ -118,6 +118,6 @@ CMakeFiles/kLineCan.dir/clean:
 .PHONY : CMakeFiles/kLineCan.dir/clean
 
 CMakeFiles/kLineCan.dir/depend: kLineCan_kLineToCan.ino.cpp
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Admin\Documents\Arduino\kLineToCan C:\Users\Admin\Documents\Arduino\kLineToCan C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles\kLineCan.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles\kLineCan.dir\DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/kLineCan.dir/depend
 

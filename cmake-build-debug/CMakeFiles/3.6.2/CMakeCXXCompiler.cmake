@@ -1,7 +1,7 @@
-set(CMAKE_CXX_COMPILER "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-g++.exe")
+set(CMAKE_CXX_COMPILER "C:/WinAVR/bin/avr-g++.exe")
 set(CMAKE_CXX_COMPILER_ARG1 "")
 set(CMAKE_CXX_COMPILER_ID "GNU")
-set(CMAKE_CXX_COMPILER_VERSION "4.9.2")
+set(CMAKE_CXX_COMPILER_VERSION "4.3.3")
 set(CMAKE_CXX_COMPILER_WRAPPER "")
 set(CMAKE_CXX_STANDARD_COMPUTED_DEFAULT "98")
 set(CMAKE_CXX_COMPILE_FEATURES "")
@@ -13,9 +13,9 @@ set(CMAKE_CXX_PLATFORM_ID "")
 set(CMAKE_CXX_SIMULATE_ID "")
 set(CMAKE_CXX_SIMULATE_VERSION "")
 
-set(CMAKE_AR "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-ar.exe")
-set(CMAKE_RANLIB "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-ranlib.exe")
-set(CMAKE_LINKER "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-ld.exe")
+set(CMAKE_AR "C:/WinAVR/bin/avr-ar.exe")
+set(CMAKE_RANLIB "C:/WinAVR/bin/avr-ranlib.exe")
+set(CMAKE_LINKER "C:/WinAVR/bin/avr-ld.exe")
 set(CMAKE_COMPILER_IS_GNUCXX 1)
 set(CMAKE_CXX_COMPILER_LOADED 1)
 set(CMAKE_CXX_COMPILER_WORKS TRUE)
@@ -39,7 +39,7 @@ set(CMAKE_CXX_LINKER_PREFERENCE 30)
 set(CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES 1)
 
 # Save compiler ABI information.
-set(CMAKE_CXX_SIZEOF_DATA_PTR "")
+set(CMAKE_CXX_SIZEOF_DATA_PTR "2")
 set(CMAKE_CXX_COMPILER_ABI "")
 set(CMAKE_CXX_LIBRARY_ARCHITECTURE "")
 
@@ -63,6 +63,6 @@ endif()
 
 
 
-set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "m;m;c")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/lib")
+set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "m;c")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "C:/WinAVR/lib/gcc/avr/4.3.3;C:/WinAVR/lib/gcc;C:/WinAVR/avr/lib")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

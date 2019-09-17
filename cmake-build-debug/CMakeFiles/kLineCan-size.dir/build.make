@@ -33,19 +33,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe" -E remove -f
+RM = "C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Admin\Documents\Arduino\kLineToCan
+CMAKE_SOURCE_DIR = "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug
+CMAKE_BINARY_DIR = "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug"
 
 # Utility rule file for kLineCan-size.
 
@@ -53,8 +53,8 @@ CMAKE_BINARY_DIR = C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug
 include CMakeFiles/kLineCan-size.dir/progress.make
 
 CMakeFiles/kLineCan-size: kLineCan.elf
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Calculating kLineCan image size"
-	"C:\Program Files (x86)\JetBrains\CLion 2016.3\bin\cmake\bin\cmake.exe" -DFIRMWARE_IMAGE=C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf -DMCU=atmega328p -DEEPROM_IMAGE=C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep -P C:/Users/Admin/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/FirmwareSize.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir="C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Calculating kLineCan image size"
+	"C:\Program Files (x86)\JetBrains\CLion 2016.3.1\bin\cmake\bin\cmake.exe" "-DFIRMWARE_IMAGE=C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.elf" -DMCU=atmega328p "-DEEPROM_IMAGE=C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/kLineCan.eep" -P "C:/Users/Angel Zaprianov/Documents/Arduino/kLineToCan/cmake-build-debug/CMakeFiles/FirmwareSize.cmake"
 
 kLineCan-size: CMakeFiles/kLineCan-size
 kLineCan-size: CMakeFiles/kLineCan-size.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/kLineCan-size.dir/clean:
 .PHONY : CMakeFiles/kLineCan-size.dir/clean
 
 CMakeFiles/kLineCan-size.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\Admin\Documents\Arduino\kLineToCan C:\Users\Admin\Documents\Arduino\kLineToCan C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug C:\Users\Admin\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles\kLineCan-size.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug" "C:\Users\Angel Zaprianov\Documents\Arduino\kLineToCan\cmake-build-debug\CMakeFiles\kLineCan-size.dir\DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/kLineCan-size.dir/depend
 

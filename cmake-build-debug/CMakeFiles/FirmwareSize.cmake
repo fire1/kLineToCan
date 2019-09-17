@@ -1,5 +1,5 @@
 
-        set(AVRSIZE_PROGRAM "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-size.exe")
+        set(AVRSIZE_PROGRAM "C:/WinAVR/bin/avr-size.exe")
         set(AVRSIZE_FLAGS -C --mcu=${MCU})
 
         execute_process(COMMAND ${AVRSIZE_PROGRAM} ${AVRSIZE_FLAGS} ${FIRMWARE_IMAGE} ${EEPROM_IMAGE}
