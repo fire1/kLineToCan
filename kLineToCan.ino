@@ -52,8 +52,7 @@ void loop() {
     Serial.println(F("  3) Show Diagnostic Trouble Codes"));
     Serial.println(F("  4) Clear Diagnostic Trouble Codes and stored values"));
     Serial.println(F("  5) Test results, oxygen sensor monitoring (non CAN only)"));
-    Serial.println(
-            F("  6) Test results, other component/system monitoring (Test results, oxygen sensor monitoring for CAN only)"));
+    Serial.println(F("  6) Test results, other component/system monitoring "));
     Serial.println(F("  7) Show pending Diagnostic Trouble Codes (detected during current or last driving cycle)"));
     Serial.println(F("  8) Control operation of on-board component/system"));
     Serial.println(F("  9) Request vehicle information"));
