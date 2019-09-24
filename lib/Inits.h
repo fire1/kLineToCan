@@ -75,7 +75,7 @@ void send5BaudInit() {
                     Serial.println(buffer);
 
                     //TODO: Use sendSoftSerial instead so we don't need to duplicate the junk read-back
-                    softSerial.write(invKey2);    // Send back inverted key2
+                    ecuLine.write(invKey2);    // Send back inverted key2
                     uint8_t junk;
                     getSoftSerial(junk, 1); // TX and RX share the same line so we recieve back the byte we just sent
                     //DEBUG
@@ -149,10 +149,10 @@ void send5BaudInit() {
     // We have (min) 60ms to setup our serial port before the
     // ECU starts sending back the SYNC byte (0x55)
     // Set baud rate for the Software UART defined by ISO 9141-2 (10.4 Kbaud)
-    softSerial.begin(10400);
+    ecuLine.begin(10400);
 
 
-    // softSerial.write()
+    // ecuLine.write()
 
     // The rest of the timing is a horrible mess of nested if statements
     // Should we have used the dreaded 'goto'?
@@ -175,7 +175,7 @@ void sendOpelInit() {
     digitalWrite(txPin, HIGH); //11
     digitalWrite(LED_BUILTIN, HIGH);
     delay(25); // or 20
-    softSerial.begin(10400);
+    ecuLine.begin(10400);
 
     /*
      Time [s]	 Decoded Protocol Result
@@ -188,7 +188,19 @@ void sendOpelInit() {
         0.1099995	0x83
      */
 
-    softSerial.write(0x81);
+    ecuLine.write(0x81);
+    delay(5);
+    ecuLine.write(0x11);
+    delay(5);
+    ecuLine.write(0xF1);
+    delay(5);
+    ecuLine.write(0x81);
+    delay(5);
+    ecuLine.write(0x04);
+    delay(35);
+    ecuLine.write(0x83); // 1 request data
+    delay(5);
+
     // Wait for SYNC byte (0x55)
     uint8_t sync;
     if (!getSoftSerial(sync, 300)) {

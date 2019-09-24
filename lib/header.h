@@ -25,9 +25,7 @@
 //#define LED_BUILTIN 13
 
 // Must use the same UART pins from AltSoftSerial
-#define rxPin 8
-#define txPin 9
-AltSoftSerial softSerial; // Uses Tx = 9, Rx = 8
+AltSoftSerial ecuLine(9, 8); // Uses Tx = 9, Rx = 8
 
 // The max number of ECUs that will be read from (determines how much RAM will be used)
 #define MAX_RESPONSES 15
@@ -127,7 +125,7 @@ uint8_t sendPid(uint8_t mode, uint8_t pid = 0, boolean ping = false) {
         // the byteTimeout to the start time, and wait for messageTimeout
         unsigned long startTime = millis() - 20;
 
-        while (!softSerial.available()) {
+        while (!ecuLine.available()) {
             // Timeout is 55ms
             if ((millis() - startTime) >= 55) {
                 bMsgTimeout = true;   // Leave the outter 'while' loop
@@ -187,7 +185,7 @@ uint8_t getSerial() {
 */
 boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     uint32_t start = millis();
-    while (!softSerial.available()) {
+    while (!ecuLine.available()) {
         //Wait for a byte to arrive
         if ((millis() - start) > timeout) {
             return true;
@@ -196,7 +194,7 @@ boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     // Return the (16-bit) int as a single (8-bit) byte
     // We always check for data first with Serial.available()
     // so no need to check for an empty buffer (e.g. 0xFFFF)
-    retVal = softSerial.read();
+    retVal = ecuLine.read();
     return false;
 }
 
@@ -218,7 +216,7 @@ void sendSoftSerial(uint8_t *bytes, unsigned size) {
 
     for (int i = 0; i < size; i++) {
         // Send the next byte
-        softSerial.write(bytes[i]);
+        ecuLine.write(bytes[i]);
         // TX and RX share the same line so we recieve back the byte we just sent
         uint8_t trash;
         getSoftSerial(trash, 1);
