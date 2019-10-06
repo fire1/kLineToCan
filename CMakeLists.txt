@@ -5,3 +5,4 @@ project(${PROJECT_NAME})
 
 set(${CMAKE_PROJECT_NAME}_SKETCH kLineToCan.ino)
 generate_arduino_firmware(${CMAKE_PROJECT_NAME})
+link_directories(../libraries/)

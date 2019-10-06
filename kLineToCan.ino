@@ -17,34 +17,75 @@
 // Use FLASH memory to store strings instead of SRAM
 #include <avr/pgmspace.h>
 // (Software USART) AltSoftSerial is used because it can handle non-standard baud rates
-
 #include "lib/header.h"
 
 
 // Run once after Arduino start-up/reset
 void setup() {
-    // Open (hardware) serial port now while we aren't restricted by timing
+    digitalWrite(txPin, HIGH);
     Serial.begin(115200);
-
+    Serial.println(F("Booting ..."));
+    delay(3000);
+    // Open (hardware) serial port now while we aren't restricted by timing
+    Serial.println(F("Starting ..."));
     // Use on-board LED for indication
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
+
+    lpgLine.begin(10400);
 
     // If more than 5 seconds passes between messages then we need to resend the init sequence
     // so use this timer to send 'ping' messages every 4 seconds to keep the connection alive.
     timerKeepAlive.setTimeout(4000);
 
     // Send Init sequence once to open communications
-//    send5BaudInit();
 
     sendOpelInit();
 }
 
 
+void loop() {
+//    if (ecuLine.available()) {
+//        Serial.println(" ECU:  ");
+//        Serial.write(ecuLine.read());
+//    }
+
+    if (lpgLine.available()) {
+        Serial.println(" LPG:  ");
+        Serial.write(lpgLine.read());
+    }
+
+    if (Serial.available()) {
+//        String where = Serial.readStringUntil('=');
+//        if (where == F("ecu")) {
+            int send = Serial.readStringUntil('\n').toInt();
+//            int send = Serial.read();
+            ecuLine.write(send);
+            Serial.write(send);
+            Serial.println(F("ECU-> "));
+            Serial.write(send);
+            return;
+//        }
+
+/*
+        if (where == F("lpg")) {
+            int send = Serial.read();
+            ecuLine.write(send);
+            Serial.println(F("LPG-> "));
+            Serial.write(send);
+            return;
+        }
+
+        Serial.println(F("Not found.... "));
+*/
+    }
+
+}
+
 /*
    Our main program loop will display a menu to the user
 */
-void loop() {
+void loop_() {
     // Display a menu to select which Mode the user wants to use
     Serial.println(F("MENU - Mode Selection"));
     Serial.println(F("  1) Show Current Data"));

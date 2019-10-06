@@ -6,6 +6,7 @@
 #define KLINECAN_INITS_H
 
 #include <Arduino.h>
+#include "header.h"
 
 /*
    Send the 5-baud Initialization sequence to open communications
@@ -167,6 +168,16 @@ void send5BaudInit() {
     timerKeepAlive.restart();
 }
 
+void sendReq(byte data[], byte length, SoftwareSerial &digiSerial) {
+    Serial.println(F("Sending packet... "));
+    for (byte x = 0; x < length; x++) {
+        //ssmLine.write(data[x]); //Use this to check with ssmLine var not with reference
+        ecuLine.write(data[x]);
+        //delay(10);
+        Serial.println(data[x]);
+    }
+    Serial.println(F("done sending."));
+}
 
 void sendOpelInit() {
     digitalWrite(txPin, LOW); // start bit
@@ -174,8 +185,8 @@ void sendOpelInit() {
     delay(25);
     digitalWrite(txPin, HIGH); //11
     digitalWrite(LED_BUILTIN, HIGH);
-    delay(25); // or 20
     ecuLine.begin(10400);
+    delay(25);// or 20
 
     /*
      Time [s]	 Decoded Protocol Result
@@ -188,24 +199,53 @@ void sendOpelInit() {
         0.1099995	0x83
      */
 
-    ecuLine.write(0x81);
-    delay(5);
-    ecuLine.write(0x11);
-    delay(5);
-    ecuLine.write(0xF1);
-    delay(5);
-    ecuLine.write(0x81);
-    delay(5);
-    ecuLine.write(0x04);
-    delay(35);
-    ecuLine.write(0x83); // 1 request data
-    delay(5);
+    /*
+Keyword 2031 protocol
+Keyword #1: EF
+Keyword #2: 8F
+     */
 
+
+    uint8_t data[5] = {129,17,241,129,4};
+
+    sendSoftSerial(data, 5);
+    delay(25);
+
+    Serial.println("Waiting response");
+    // Wait for SYNC byte (0x55)
+
+    bool bInitError = false;  // If there is an error, set bInitError to true
+    String strError = "";     // and store the error description in strError.
+    bool iso9141 = false;     // Will either be ISO 9141 or ISO 14230
     // Wait for SYNC byte (0x55)
     uint8_t sync;
-    if (!getSoftSerial(sync, 300)) {
-        Serial.println(sync, HEX);
+    uint16_t timeout = 1000;
+    uint32_t start = millis();
+    while (!ecuLine.available()) {
+        //Wait for a byte to arrive
+        if ((millis() - start) > timeout) {
+
+        }
     }
+    uint8_t res = ecuLine.read();
+    // Return the (16-bit) int as a single (8-bit) byte
+    // We always check for data first with Serial.available()
+    // so no need to check for an empty buffer (e.g. 0xFFFF)
+    Serial.println("Response: ");
+    Serial.println(res);
+
+    if(res == 131){
+        uint8_t trys[1] = {241};
+        sendSoftSerial(trys,1);
+        Serial.println(ecuLine.read());
+    }
+/*
+    if (!getSoftSerial(sync, 300)) {
+        //DEBUG
+        snprintf_P(buffer, BUFLEN, PSTR("SYNC Byte: %2X"), sync);
+        Serial.println(buffer);
+
+    }*/
 }
 
 #endif //KLINECAN_INITS_H

@@ -5,6 +5,11 @@
 #ifndef KLINECAN_HEADER_H
 #define KLINECAN_HEADER_H
 
+#include <SoftwareSerial.h>
+
+
+SoftwareSerial lpgLine(2, 3); // RX, TX
+
 #include <AltSoftSerial.h>
 // (Software Timer) Used to keep the connection alive
 #include <RBD_Timer.h>
@@ -24,8 +29,11 @@
 
 //#define LED_BUILTIN 13
 
+
+#define txPin 9
+#define rxPin 8
 // Must use the same UART pins from AltSoftSerial
-AltSoftSerial ecuLine(9, 8); // Uses Tx = 9, Rx = 8
+AltSoftSerial ecuLine(txPin, rxPin); // Uses Tx = 9, Rx = 8
 
 // The max number of ECUs that will be read from (determines how much RAM will be used)
 #define MAX_RESPONSES 15
@@ -55,11 +63,38 @@ char buffer[BUFLEN] = {0};
 // Used to send a 'ping' request every few seconds to keep the connection alive
 RBD::Timer timerKeepAlive;
 
-#include "lib/inits.h"
+
 
 static boolean getSoftSerial(uint8_t &retVal, uint32_t timeout);
 
 
+
+/*
+   A function that will send (Tx) an array of bytes to the Software Serial port
+*/
+void sendSoftSerial(uint8_t *bytes, unsigned size) {
+    //DEBUG
+    /*
+      Serial.println();
+      Serial.print("Sending: ");
+      for( int i = 0; i < size; i++ ) {
+        snprintf(buffer, BUFLEN, "%02X ", bytes[i]);
+        Serial.print(buffer);
+      }
+      Serial.println();
+    */
+
+    for (int i = 0; i < size; i++) {
+        // Send the next byte
+        ecuLine.write(bytes[i]);
+        // TX and RX share the same line so we recieve back the byte we just sent
+        uint8_t trash;
+        getSoftSerial(trash, 1);
+        //TODO: This can be adjusted depending on how long the above
+        //      function takes to execute. 5ms <= P4 <= 20ms
+        delay(5); // P4 (Inter-byte spacing)
+    }
+}
 
 /*
   Send a request to system as a the 'Diagnostic Tool/External Test Equipment'
@@ -198,32 +233,6 @@ boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     return false;
 }
 
-
-/*
-   A function that will send (Tx) an array of bytes to the Software Serial port
-*/
-void sendSoftSerial(uint8_t *bytes, unsigned size) {
-    //DEBUG
-    /*
-      Serial.println();
-      Serial.print("Sending: ");
-      for( int i = 0; i < size; i++ ) {
-        snprintf(buffer, BUFLEN, "%02X ", bytes[i]);
-        Serial.print(buffer);
-      }
-      Serial.println();
-    */
-
-    for (int i = 0; i < size; i++) {
-        // Send the next byte
-        ecuLine.write(bytes[i]);
-        // TX and RX share the same line so we recieve back the byte we just sent
-        uint8_t trash;
-        getSoftSerial(trash, 1);
-        //TODO: This can be adjusted depending on how long the above
-        //      function takes to execute. 5ms <= P4 <= 20ms
-        delay(5); // P4 (Inter-byte spacing)
-    }
-}
+#include "inits.h"
 
 #endif //KLINECAN_HEADER_H
