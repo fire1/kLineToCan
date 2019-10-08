@@ -179,6 +179,7 @@ void sendReq(byte data[], byte length, SoftwareSerial &digiSerial) {
     Serial.println(F("done sending."));
 }
 
+
 void sendOpelInit() {
     digitalWrite(txPin, LOW); // start bit
     digitalWrite(LED_BUILTIN, LOW);
@@ -188,37 +189,18 @@ void sendOpelInit() {
     ecuLine.begin(10400);
     delay(25);// or 20
 
-    /*
-     Time [s]	 Decoded Protocol Result
-        0	0x00 (framing error)
-        0.050314	0x81 <-request
-        0.05621	    0x11 <-receive ?
-        0.062106	0xF1
-        0.068003	0x81
-        0.073899	0x04
-        0.1099995	0x83
-     */
-
-    /*
-Keyword 2031 protocol
-Keyword #1: EF
-Keyword #2: 8F
-     */
-
-
-    uint8_t data[5] = {129,17,241,129,4};
+    uint8_t data[5] = {129, 17, 241, 129, 4};
 
     sendSoftSerial(data, 5);
     delay(25);
 
     Serial.println("Waiting response");
-    // Wait for SYNC byte (0x55)
 
     bool bInitError = false;  // If there is an error, set bInitError to true
     String strError = "";     // and store the error description in strError.
     bool iso9141 = false;     // Will either be ISO 9141 or ISO 14230
     // Wait for SYNC byte (0x55)
-    uint8_t sync;
+    uint8_t syncStart,syncEnd;
     uint16_t timeout = 1000;
     uint32_t start = millis();
     while (!ecuLine.available()) {
@@ -227,25 +209,36 @@ Keyword #2: 8F
 
         }
     }
-    uint8_t res = ecuLine.read();
-    // Return the (16-bit) int as a single (8-bit) byte
-    // We always check for data first with Serial.available()
-    // so no need to check for an empty buffer (e.g. 0xFFFF)
-    Serial.println("Response: ");
-    Serial.println(res);
-
-    if(res == 131){
-        uint8_t trys[1] = {241};
-        sendSoftSerial(trys,1);
-        Serial.println(ecuLine.read());
-    }
-/*
-    if (!getSoftSerial(sync, 300)) {
-        //DEBUG
-        snprintf_P(buffer, BUFLEN, PSTR("SYNC Byte: %2X"), sync);
+    syncStart = ecuLine.read();
+    if (syncStart == 131) {
+        snprintf_P(buffer, BUFLEN, PSTR("SYNC Byte: %2X"), syncStart);
         Serial.println(buffer);
+        uint8_t tries[3] = {241,193,143}; // 0xF1 0xC1 0xC4
+        uint8_t sync;
+        sendSoftSerial(tries, 3);
 
-    }*/
+    }
+    syncEnd = ecuLine.read();
+    if(syncEnd == 196){
+        snprintf_P(buffer, BUFLEN, PSTR("SYNC ended: %2X"), syncEnd);
+        Serial.println(buffer);
+    }
+    /*
+     * To lpg ecu
+     * Session	IniValizaVon	and	teardown
+     *      0x81h	Start	CommunicaVon	Service	Request
+     *      0x82h	Stop	CommunicaVon	Service	Request
+     *
+     *      0x01 : show current data
+     *      0x02 : show freeze frame data
+     *      0x03 : show stored diagnostic trouble code.
+     *
+     *      0x04 : engine load
+     *      0x05 : engine coolant temparature
+     *      0x0C : engine rpm
+     *      0x0D : vehicle spped
+     *      0x10 : MAF air flow rate
+     * */
 }
 
 #endif //KLINECAN_INITS_H

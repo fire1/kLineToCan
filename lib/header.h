@@ -233,6 +233,6 @@ boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     return false;
 }
 
-#include "inits.h"
+
 
 #endif //KLINECAN_HEADER_H

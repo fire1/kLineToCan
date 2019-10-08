@@ -18,7 +18,7 @@
 #include <avr/pgmspace.h>
 // (Software USART) AltSoftSerial is used because it can handle non-standard baud rates
 #include "lib/header.h"
-
+#include "lib/inits.h"
 
 // Run once after Arduino start-up/reset
 void setup() {

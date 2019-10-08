@@ -5,4 +5,5 @@ project(${PROJECT_NAME})
 
 set(${CMAKE_PROJECT_NAME}_SKETCH kLineToCan.ino)
 generate_arduino_firmware(${CMAKE_PROJECT_NAME})
-link_directories(../libraries/)
+include_directories( "../libraries/"  "C:\\Program Files (x86)\\Arduino\\")
+add_compile_definitions(__AVR_ATmega328P__)
