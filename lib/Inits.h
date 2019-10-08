@@ -223,11 +223,13 @@ void sendOpelInit() {
         snprintf_P(buffer, BUFLEN, PSTR("SYNC ended: %2X"), syncEnd);
         Serial.println(buffer);
     }
+
+
     /*
      * To lpg ecu
-     * Session	IniValizaVon	and	teardown
-     *      0x81h	Start	CommunicaVon	Service	Request
-     *      0x82h	Stop	CommunicaVon	Service	Request
+     * Session		and	teardown
+     *      0x81	Start		Service	Request
+     *      0x82	Stop		Service	Request
      *
      *      0x01 : show current data
      *      0x02 : show freeze frame data
