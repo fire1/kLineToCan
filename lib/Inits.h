@@ -240,6 +240,11 @@ void sendOpelInit() {
      *      0x0C : engine rpm
      *      0x0D : vehicle spped
      *      0x10 : MAF air flow rate
+     *
+     *
+     *      LPG initialise
+     *      From SDS: 81 12 F1 81 05
+     *      From ECU: 80 F1 12 03 C1 EA 8F C0
      * */
 }
 

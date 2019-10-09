@@ -40,15 +40,34 @@ void setup() {
 
     // Send Init sequence once to open communications
 
-    sendOpelInit();
+
+    ecuLine.write(0x83);
+    uint8_t data[8] = {0x80, 0xF1, 0x12, 0x03, 0xC1, 0xEA, 0x8F, 0xC0};
+
+    sendSoftSerial(data, 5);
+
+    Serial.println("Waiting response");
+    uint8_t res;
+    uint16_t timeout = 1000;
+    uint32_t start = millis();
+    while (!ecuLine.available()) {
+        //Wait for a byte to arrive
+        if ((millis() - start) > timeout) {
+
+        }
+    }
+    res = ecuLine.read();
+    Serial.println(res);
+
+//    sendOpelInit();
 }
 
 
 void loop() {
-//    if (ecuLine.available()) {
-//        Serial.println(" ECU:  ");
-//        Serial.write(ecuLine.read());
-//    }
+    if (ecuLine.available()) {
+        Serial.println(" ECU:  ");
+        Serial.write(ecuLine.read());
+    }
 
     if (lpgLine.available()) {
         Serial.println(" LPG:  ");
@@ -58,13 +77,13 @@ void loop() {
     if (Serial.available()) {
 //        String where = Serial.readStringUntil('=');
 //        if (where == F("ecu")) {
-            int send = Serial.readStringUntil('\n').toInt();
+        int send = Serial.readStringUntil('\n').toInt();
 //            int send = Serial.read();
-            ecuLine.write(send);
-            Serial.write(send);
-            Serial.println(F("ECU-> "));
-            Serial.write(send);
-            return;
+        ecuLine.write(send);
+        Serial.write(send);
+        Serial.println(F("ECU-> "));
+        Serial.write(send);
+        return;
 //        }
 
 /*
