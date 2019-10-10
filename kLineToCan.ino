@@ -18,7 +18,7 @@
 #include <avr/pgmspace.h>
 // (Software USART) AltSoftSerial is used because it can handle non-standard baud rates
 #include "lib/header.h"
-#include "lib/inits.h"
+#include "lib/initialization.h"
 
 // Run once after Arduino start-up/reset
 void setup() {
@@ -41,25 +41,9 @@ void setup() {
     // Send Init sequence once to open communications
 
 
-    ecuLine.write(0x83);
-    uint8_t data[8] = {0x80, 0xF1, 0x12, 0x03, 0xC1, 0xEA, 0x8F, 0xC0};
 
-    sendSoftSerial(data, 5);
-
-    Serial.println("Waiting response");
-    uint8_t res;
-    uint16_t timeout = 1000;
-    uint32_t start = millis();
-    while (!ecuLine.available()) {
-        //Wait for a byte to arrive
-        if ((millis() - start) > timeout) {
-
-        }
-    }
-    res = ecuLine.read();
-    Serial.println(res);
-
-//    sendOpelInit();
+    lpgInit();
+//    ecuInit();
 }
 
 

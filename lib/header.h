@@ -64,15 +64,14 @@ char buffer[BUFLEN] = {0};
 RBD::Timer timerKeepAlive;
 
 
-
 static boolean getSoftSerial(uint8_t &retVal, uint32_t timeout);
-
-
-
-/*
-   A function that will send (Tx) an array of bytes to the Software Serial port
-*/
-void sendSoftSerial(uint8_t *bytes, unsigned size) {
+/**
+ * A function that will send (Tx) an array of bytes to the Software Serial port
+ * @param bytes
+ * @param size
+ * @param pause
+ */
+void sendSoftSerial(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
     //DEBUG
     /*
       Serial.println();
@@ -87,12 +86,14 @@ void sendSoftSerial(uint8_t *bytes, unsigned size) {
     for (int i = 0; i < size; i++) {
         // Send the next byte
         ecuLine.write(bytes[i]);
+
+        // todo try using ecuLine.flushInput()  instead getSoftSerial
         // TX and RX share the same line so we recieve back the byte we just sent
         uint8_t trash;
         getSoftSerial(trash, 1);
         //TODO: This can be adjusted depending on how long the above
         //      function takes to execute. 5ms <= P4 <= 20ms
-        delay(5); // P4 (Inter-byte spacing)
+        delay(pause); // P4 (Inter-byte spacing)
     }
 }
 
@@ -232,7 +233,6 @@ boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     retVal = ecuLine.read();
     return false;
 }
-
 
 
 #endif //KLINECAN_HEADER_H
