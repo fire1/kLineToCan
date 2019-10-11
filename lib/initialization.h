@@ -7,23 +7,29 @@
 
 #include "header.h"
 
-
-boolean fastInitReceive() {
-    unsigned long len = pulseIn(rxPin, LOW, 1000);
-    if (len > 20 && len < 30) {
-        return false;
+void lpgInitSend(byte check, byte send, uint16_t timeout) {
+    uint8_t _sync;
+    if (!getSoftSerial(_sync, timeout)) {
+        if (_sync == check) {
+            ecuLine.write(send);
+        }
     }
-    return true;
+}
+
+boolean fastInitFrame() {
+    lpgInitSend(0xC1, 0x83, 1500);
+    lpgInitSend(0x33, 0xF1, 15);
+    lpgInitSend(0xF1, 0x11, 15);
+    lpgInitSend(0x81, 0xC1, 15);
+    lpgInitSend(0x66, 0xEF, 15);
+    ecuLine.write(0xC4); // checksum
 }
 
 void lpgInit() {
-    ecuLine.write(0x83);
-
-
-    Serial.println(F("Waiting fast LOW init "));
-    while (fastInitReceive());
     ecuLine.flushInput();
     ecuLine.begin(10400);
+    Serial.println(F("Waiting fast  init "));
+
     /*
       0xC1 0x33 0xF1 0x81 0x66 is transmitted by the UART to the car
      */
