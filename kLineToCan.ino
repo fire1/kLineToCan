@@ -20,18 +20,30 @@
 #include "lib/header.h"
 #include "lib/initialization.h"
 
+
+const uint8_t pinEcu = A0;
+const uint8_t pinLpg = A1;
+
+
 // Run once after Arduino start-up/reset
 void setup() {
     digitalWrite(txPin, HIGH);
     Serial.begin(115200);
     Serial.println(F("Booting ..."));
+    pinMode(pinEcu, OUTPUT);
+    pinMode(pinLpg, OUTPUT);
+    digitalWrite(pinEcu, LOW);
+    digitalWrite(pinLpg, LOW);
+
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, LOW);
     delay(3000);
     // Open (hardware) serial port now while we aren't restricted by timing
     Serial.println(F("Starting ..."));
     // Use on-board LED for indication
     pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(rxPin, INPUT_PULLUP);
     digitalWrite(LED_BUILTIN, LOW);
-
     lpgLine.begin(10400);
 
     // If more than 5 seconds passes between messages then we need to resend the init sequence
@@ -41,21 +53,31 @@ void setup() {
     // Send Init sequence once to open communications
 
 
-    pinMode(rxPin, INPUT_PULLUP);
+
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(3);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    boolean ecu = false;
+    do {
+        digitalWrite(pinEcu, HIGH);
+        digitalWrite(pinLpg, LOW);
+        delay(15);
+        ecu = ecuInit();
+    } while (!ecu);
+
+    digitalWrite(pinEcu, LOW);
+    digitalWrite(pinLpg, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(5);
+    digitalWrite(LED_BUILTIN, LOW);
 
     lpgInit();
-//    ecuInit();
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, HIGH);
+
 }
 
-
-void loop3() {
-    lpgInit();
-    unsigned long len = pulseIn(rxPin, LOW, 1000);
-    if (len > 190) {
-        Serial.println(len);
-        delay(10);
-    }
-}
 
 void loop() {
     if (ecuLine.available()) {
