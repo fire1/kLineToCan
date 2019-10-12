@@ -41,16 +41,27 @@ void setup() {
     // Send Init sequence once to open communications
 
 
+    pinMode(rxPin, INPUT_PULLUP);
 
     lpgInit();
 //    ecuInit();
 }
 
 
+void loop3() {
+    lpgInit();
+    unsigned long len = pulseIn(rxPin, LOW, 1000);
+    if (len > 190) {
+        Serial.println(len);
+        delay(10);
+    }
+}
+
 void loop() {
     if (ecuLine.available()) {
-        Serial.println(" ECU:  ");
-        Serial.write(ecuLine.read());
+        Serial.print(" ECU:  ");
+        snprintf_P(buffer, BUFLEN, PSTR(" Byte: %2X"), ecuLine.read());
+        Serial.println(buffer);
     }
 
     if (lpgLine.available()) {

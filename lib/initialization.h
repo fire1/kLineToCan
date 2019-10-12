@@ -11,18 +11,48 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
     uint8_t _sync;
     if (!getSoftSerial(_sync, timeout)) {
         if (_sync == check) {
+            Serial.print(" / send ");
+            Serial.print(send, HEX);
             ecuLine.write(send);
+            getSoftSerial(send, 1);
+        } else {
+            Serial.println(" Error ");
+            Serial.print(check, HEX);
         }
     }
 }
 
+boolean lpgFindBegin() {
+    uint8_t first;
+    if (!getSoftSerial(first, 3000)) {
+        if (first == 0xC1) {
+            Serial.print(" starting ");
+            Serial.print(first, HEX);
+            Serial.print(" / send ");
+            Serial.print(0x83, HEX);
+            ecuLine.write(0x83); // first response
+            getSoftSerial(first, 1);
+            return true;
+        }
+
+        Serial.print(" reads: ");
+        Serial.print(first, HEX);
+    }
+    return false;
+}
+
 boolean fastInitFrame() {
-    lpgInitSend(0xC1, 0x83, 1500);
+    uint8_t temp;
+    while (!lpgFindBegin());
     lpgInitSend(0x33, 0xF1, 15);
     lpgInitSend(0xF1, 0x11, 15);
     lpgInitSend(0x81, 0xC1, 15);
     lpgInitSend(0x66, 0xEF, 15);
     ecuLine.write(0xC4); // checksum
+    getSoftSerial(temp, 1);
+    Serial.println();
+    Serial.println(F(" Done!"));
+
 }
 
 void lpgInit() {
@@ -30,26 +60,8 @@ void lpgInit() {
     ecuLine.begin(10400);
     Serial.println(F("Waiting fast  init "));
 
-    /*
-      0xC1 0x33 0xF1 0x81 0x66 is transmitted by the UART to the car
-     */
-    uint8_t income = ecuLine.read();
-    Serial.println(income);
-    if (income == 0xC1) {
-        Serial.println("OK");
-    }
-    /*
-     The car responds with 0x83 0xF1 0x11 0xC1 0x8F 0xEF 0xC4 (sum of all received bytes except the last should be 0xC4).
-     */
-    uint8_t data[8] = {0x83, 0xF1, 0x11, 0xC1, 0x8F, 0xEF, 0xC4};
-    sendSoftSerial(data, 7, 25);
-
-    uint8_t sync;
-    uint16_t timeout = 5000;
-    if (!getSoftSerial(sync, timeout)) {
-        snprintf_P(buffer, BUFLEN, PSTR("SYNC Byte: %2X"), sync);
-        Serial.println(buffer);
-    }
+    fastInitFrame();
+    Serial.println(F("Finish ..."));
 }
 
 void ecuInit() {

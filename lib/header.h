@@ -219,7 +219,7 @@ uint8_t getSerial() {
    @param timeout The number of milliseconds to wait for a byte to be read on the port
    @return Did the timeout occur before reading? False: read is good, True: retVal was not filled in time (failed)
 */
-boolean getSoftSerial(uint8_t &retVal, uint32_t timeout) {
+boolean     getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     uint32_t start = millis();
     while (!ecuLine.available()) {
         //Wait for a byte to arrive
