@@ -21,9 +21,6 @@
 #include "lib/initialization.h"
 
 
-const uint8_t pinEcu = A0;
-const uint8_t pinLpg = A1;
-
 
 // Run once after Arduino start-up/reset
 void setup() {
@@ -54,9 +51,6 @@ void setup() {
 
 
 
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(3);
-    digitalWrite(LED_BUILTIN, LOW);
 
     boolean ecu = false;
     do {
@@ -68,13 +62,13 @@ void setup() {
 
     digitalWrite(pinEcu, LOW);
     digitalWrite(pinLpg, HIGH);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(5);
-    digitalWrite(LED_BUILTIN, LOW);
-
+    delay(3);
     lpgInit();
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, HIGH);
+
+    uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
+    sendSoftSerial(data2, 6);
 
 }
 
@@ -83,7 +77,8 @@ void loop() {
     if (ecuLine.available()) {
         Serial.print(" ECU:  ");
         snprintf_P(buffer, BUFLEN, PSTR(" Byte: %2X"), ecuLine.read());
-        Serial.println(buffer);
+        Serial.print(buffer);
+        Serial.print(" / ");
     }
 
     if (lpgLine.available()) {

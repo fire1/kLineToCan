@@ -27,6 +27,9 @@ SoftwareSerial lpgLine(2, 3); // RX, TX
 #endif
 
 
+const uint8_t pinEcu = A0;
+const uint8_t pinLpg = A1;
+
 //#define LED_BUILTIN 13
 
 

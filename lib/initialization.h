@@ -16,8 +16,10 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
             ecuLine.write(send);
             getSoftSerial(send, 1);
         } else {
+            ecuLine.write(send);
             Serial.println(" Error ");
             Serial.print(check, HEX);
+
         }
     }
 }
@@ -49,18 +51,18 @@ boolean fastInitFrame() {
     lpgInitSend(0xF1, 0x11, 15);
     lpgInitSend(0x81, 0xC1, 15);
     lpgInitSend(0x66, 0xEF, 15);
+
     ecuLine.write(0xC4); // checksum
     getSoftSerial(temp, 1);
     Serial.println();
     Serial.println(F(" Done!"));
 
+
 }
 
 
 void lpgInit() {
-    ecuLine.flushInput();
-    ecuLine.begin(10400);
-    Serial.println(F("Waiting LPG fast  init "));
+    Serial.println(F("LPG fast init ... "));
 
     fastInitFrame();
     Serial.println(F("Finish LPG ..."));
@@ -80,41 +82,44 @@ boolean ecuInit() {
 //    uint8_t data[5] = {129, 17, 241, 129, 4};
 
     sendSoftSerial(data, 5);
+    Serial.println("Waiting ECU response");
     delay(25);
 
-    Serial.println("Waiting ECU response");
 
     String strError = "";     // and store the error description in strError.
     // Wait for SYNC byte (0x55)
     uint8_t syncStart, syncEnd;
-    uint16_t timeout = 1000;
-    uint32_t start = millis();
-    while (!ecuLine.available()) {
-        //Wait for a byte to arrive
-        if ((millis() - start) > timeout) {
 
-        }
-    }
+
     getSoftSerial(syncStart, 2000);
-    if (syncStart == 131) {
-        snprintf_P(buffer, BUFLEN, PSTR("SYNC Byte: %2X"), syncStart);
+
+    if (syncStart !=/*  == 0x83*/ 0x00) {
+        snprintf_P(buffer, BUFLEN, PSTR("ECU Capture starting: %2X"), syncStart);
         Serial.println(buffer);
 
-//        uint8_t tries[3] = {241, 193, 143}; // 0xF1 0xC1 0xC4
-        uint8_t tries[3] = {0xF1, 0xC1, 0xC4}; // 0xF1 0xC1 0xC4
-        sendSoftSerial(tries, 3);
+// old op-com
+//        uint8_t tries[3] = {0xF1, 0xC1, 0xC4}; // respond 0x11 0xEF
+        uint8_t data1[3] = {0xF1 /* 0x11 */, 0xC1 /* 0xEF */, 0x8F /* 0xC4 */}; //
+        sendSoftSerial(data1, 3);
+//        delay(10);
+return true;
+//        return true;
+    }else{
+        snprintf_P(buffer, BUFLEN, PSTR("Wrong ECU: %2X"), syncStart);
+        Serial.println(buffer);
 
     }
 
 
     getSoftSerial(syncEnd, 2000);
-    if (syncEnd == 239/*196*/) {
+    if (syncEnd != /* == 239*//*196*/ 0x00) {
         snprintf_P(buffer, BUFLEN, PSTR(" ECU  ended: %2X"), syncEnd);
         Serial.println(buffer);
         return true;
     } else {
-        Serial.println("Ended");
+        Serial.println("Ended ");
         Serial.print(syncEnd);
+        Serial.println();
     }
 
     return false;
