@@ -9,12 +9,12 @@
 
 void lpgInitSend(byte check, byte send, uint16_t timeout) {
     uint8_t _sync;
-    if (!getSoftSerial(_sync, timeout)) {
+    if (!getLpgSerial(_sync, timeout)) {
         if (_sync == check) {
             Serial.print(" / send ");
             Serial.print(send, HEX);
-            ecuLine.write(send);
-            getSoftSerial(send, 1);
+            lpgLine.write(send);
+            getLpgSerial(send, 1);
         } else {
             ecuLine.write(send);
             Serial.println(" Error ");
@@ -26,14 +26,14 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
 
 boolean lpgFindBegin() {
     uint8_t first;
-    if (!getSoftSerial(first, 3000)) {
+    if (!getLpgSerial(first, 3000)) {
         if (first == 0xC1) {
             Serial.print(" starting ");
             Serial.print(first, HEX);
             Serial.print(" / send ");
             Serial.print(0x83, HEX);
-            ecuLine.write(0x83); // first response
-            getSoftSerial(first, 1);
+            lpgLine.write(0x83); // first response
+            getLpgSerial(first, 1);
             return true;
         }
 
@@ -53,7 +53,7 @@ boolean fastInitFrame() {
     lpgInitSend(0x66, 0xEF, 15);
 
     ecuLine.write(0xC4); // checksum
-    getSoftSerial(temp, 1);
+    getLpgSerial(temp, 1);
     Serial.println();
     Serial.println(F(" Done!"));
 
@@ -63,7 +63,6 @@ boolean fastInitFrame() {
 
 void lpgInit() {
     Serial.println(F("LPG fast init ... "));
-
     fastInitFrame();
     Serial.println(F("Finish LPG ..."));
 }

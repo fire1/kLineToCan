@@ -8,7 +8,6 @@
 #include <SoftwareSerial.h>
 
 
-SoftwareSerial lpgLine(2, 3); // RX, TX
 
 #include <AltSoftSerial.h>
 // (Software Timer) Used to keep the connection alive
@@ -37,6 +36,10 @@ const uint8_t pinLpg = A1;
 #define rxPin 8
 // Must use the same UART pins from AltSoftSerial
 AltSoftSerial ecuLine(txPin, rxPin); // Uses Tx = 9, Rx = 8
+
+
+//SoftwareSerial lpgLine(2, 3); // RX, TX
+AltSoftSerial lpgLine(10,11);
 
 // The max number of ECUs that will be read from (determines how much RAM will be used)
 #define MAX_RESPONSES 15
@@ -237,5 +240,20 @@ boolean     getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     return false;
 }
 
+
+boolean     getLpgSerial(uint8_t &retVal, uint32_t timeout) {
+    uint32_t start = millis();
+    while (!lpgLine.available()) {
+        //Wait for a byte to arrive
+        if ((millis() - start) > timeout) {
+            return true;
+        }
+    }
+    // Return the (16-bit) int as a single (8-bit) byte
+    // We always check for data first with Serial.available()
+    // so no need to check for an empty buffer (e.g. 0xFFFF)
+    retVal = lpgLine.read();
+    return false;
+}
 
 #endif //KLINECAN_HEADER_H
