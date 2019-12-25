@@ -21,7 +21,6 @@
 #include "lib/initialization.h"
 
 
-
 // Run once after Arduino start-up/reset
 void setup() {
     digitalWrite(txPin, HIGH);
@@ -34,6 +33,7 @@ void setup() {
 
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, LOW);
+    ecuLine.begin(10400);
     delay(3000);
     // Open (hardware) serial port now while we aren't restricted by timing
     Serial.println(F("Starting ..."));
@@ -41,14 +41,31 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(rxPin, INPUT_PULLUP);
     digitalWrite(LED_BUILTIN, LOW);
-    lpgLine.begin(10400);
+//    lpgLine.begin(10400);
 
     // If more than 5 seconds passes between messages then we need to resend the init sequence
     // so use this timer to send 'ping' messages every 4 seconds to keep the connection alive.
     timerKeepAlive.setTimeout(4000);
 
     // Send Init sequence once to open communications
+    digitalWrite(pinEcu, LOW);
+    digitalWrite(pinLpg, HIGH);
+    delayMicroseconds(100);
+    Serial.println(F("LPG init "));
+    uint8_t temp;
+    while (!lpgFindBegin());
+    lpgInitSend(0x33, 0xF1, 15);
+    lpgInitSend(0xF1, 0x11, 15);
+    lpgInitSend(0x81, 0xC1, 15);
+    lpgInitSend(0x66, 0xEF, 15);
 
+    ecuLine.write(0xC4); // checksum
+    getLpgSerial(temp, 1);
+    uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
+    sendSoftSerial(data2, 6);
+
+
+    Serial.println(F("Finish LPG"));
 
 
 
@@ -56,31 +73,29 @@ void setup() {
     do {
         digitalWrite(pinEcu, HIGH);
         digitalWrite(pinLpg, LOW);
-        delay(15);
+        delay(1);
         ecu = ecuInit();
     } while (!ecu);
 
-    digitalWrite(pinEcu, LOW);
-    digitalWrite(pinLpg, HIGH);
-    delay(3);
-    lpgInit();
+
+
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, HIGH);
 
-    uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
-    sendSoftSerial(data2, 6);
+    Serial.println();
+    Serial.println(F(" Done!"));
 
 }
 
 
 void loop() {
     if (ecuLine.available()) {
-        Serial.print(" ECU:  ");
+        Serial.print(" COM:  ");
         snprintf_P(buffer, BUFLEN, PSTR(" Byte: %2X"), ecuLine.read());
         Serial.print(buffer);
         Serial.print(" / ");
     }
-
+/*
     if (lpgLine.available()) {
         Serial.println(" LPG:  ");
         Serial.write(lpgLine.read());
@@ -95,7 +110,7 @@ void loop() {
         Serial.write(send);
         Serial.println(F("ECU-> "));
         Serial.write(send);
-        return;
+        return;*/
 //        }
 
 /*
@@ -108,8 +123,8 @@ void loop() {
         }
 
         Serial.println(F("Not found.... "));
+}
 */
-    }
 
 }
 

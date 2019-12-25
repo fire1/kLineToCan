@@ -13,7 +13,7 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
         if (_sync == check) {
             Serial.print(" / send ");
             Serial.print(send, HEX);
-            lpgLine.write(send);
+            ecuLine.write(send);
             getLpgSerial(send, 1);
         } else {
             ecuLine.write(send);
@@ -27,12 +27,13 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
 boolean lpgFindBegin() {
     uint8_t first;
     if (!getLpgSerial(first, 3000)) {
-        if (first == 0xC1) {
+//        if (first == 0xC1) {
+        if (first != 0x00) {
             Serial.print(" starting ");
             Serial.print(first, HEX);
             Serial.print(" / send ");
             Serial.print(0x83, HEX);
-            lpgLine.write(0x83); // first response
+            ecuLine.write(0x83); // first response
             getLpgSerial(first, 1);
             return true;
         }
@@ -54,17 +55,17 @@ boolean fastInitFrame() {
 
     ecuLine.write(0xC4); // checksum
     getLpgSerial(temp, 1);
-    Serial.println();
-    Serial.println(F(" Done!"));
+    uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
+    sendSoftSerial(data2, 6);
 
 
 }
 
 
 void lpgInit() {
-    Serial.println(F("LPG fast init ... "));
+    Serial.println(F("LPG init "));
     fastInitFrame();
-    Serial.println(F("Finish LPG ..."));
+    Serial.println(F("Finish LPG"));
 }
 
 boolean ecuInit() {
@@ -101,9 +102,9 @@ boolean ecuInit() {
         uint8_t data1[3] = {0xF1 /* 0x11 */, 0xC1 /* 0xEF */, 0x8F /* 0xC4 */}; //
         sendSoftSerial(data1, 3);
 //        delay(10);
-return true;
+        return true;
 //        return true;
-    }else{
+    } else {
         snprintf_P(buffer, BUFLEN, PSTR("Wrong ECU: %2X"), syncStart);
         Serial.println(buffer);
 
