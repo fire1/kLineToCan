@@ -33,7 +33,7 @@ void setup() {
 
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, LOW);
-    ecuLine.begin(10400);
+
     delay(3000);
     // Open (hardware) serial port now while we aren't restricted by timing
     Serial.println(F("Starting ..."));
@@ -46,39 +46,21 @@ void setup() {
     // If more than 5 seconds passes between messages then we need to resend the init sequence
     // so use this timer to send 'ping' messages every 4 seconds to keep the connection alive.
     timerKeepAlive.setTimeout(4000);
-
+    ecuLine.begin(10400);
     // Send Init sequence once to open communications
     digitalWrite(pinEcu, LOW);
     digitalWrite(pinLpg, HIGH);
-    delayMicroseconds(100);
-    Serial.println(F("LPG init "));
-    uint8_t temp;
-    while (!lpgFindBegin());
-    lpgInitSend(0x33, 0xF1, 15);
-    lpgInitSend(0xF1, 0x11, 15);
-    lpgInitSend(0x81, 0xC1, 15);
-    lpgInitSend(0x66, 0xEF, 15);
-
-    ecuLine.write(0xC4); // checksum
-    getLpgSerial(temp, 1);
-    uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
-    sendSoftSerial(data2, 6);
-
-
-    Serial.println(F("Finish LPG"));
-
-
-
-    boolean ecu = false;
-    do {
-        digitalWrite(pinEcu, HIGH);
-        digitalWrite(pinLpg, LOW);
-        delay(1);
-        ecu = ecuInit();
-    } while (!ecu);
-
-
-
+    Serial.println(F("Waiting LPG "));
+//    delayMicroseconds(100);
+    lpgInit();
+    //
+    // Start ECU communication
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, LOW);
+//    delayMicroseconds(100);
+//    Serial.println(F("ECU start "));
+//    delayMicroseconds(100);
+    ecuInit();
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, HIGH);
 
@@ -87,13 +69,20 @@ void setup() {
 
 }
 
+uint8_t capIndex = 0;
 
 void loop() {
     if (ecuLine.available()) {
-        Serial.print(" COM:  ");
-        snprintf_P(buffer, BUFLEN, PSTR(" Byte: %2X"), ecuLine.read());
+        Serial.print(" :");
+        snprintf_P(buffer, BUFLEN, PSTR("%2X"), ecuLine.read());
         Serial.print(buffer);
-        Serial.print(" / ");
+        Serial.print(" ");
+        capIndex++;
+    }
+
+    if (capIndex > 8) {
+        Serial.println();
+        capIndex = 0;
     }
 /*
     if (lpgLine.available()) {

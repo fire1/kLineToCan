@@ -27,8 +27,7 @@ void lpgInitSend(byte check, byte send, uint16_t timeout) {
 boolean lpgFindBegin() {
     uint8_t first;
     if (!getLpgSerial(first, 3000)) {
-//        if (first == 0xC1) {
-        if (first != 0x00) {
+        if (first == 0xC1) {
             Serial.print(" starting ");
             Serial.print(first, HEX);
             Serial.print(" / send ");
@@ -44,7 +43,8 @@ boolean lpgFindBegin() {
     return false;
 }
 
-boolean fastInitFrame() {
+
+void lpgInit() {
 
     uint8_t temp;
     while (!lpgFindBegin());
@@ -57,15 +57,6 @@ boolean fastInitFrame() {
     getLpgSerial(temp, 1);
     uint8_t data2[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6}; // secondary data
     sendSoftSerial(data2, 6);
-
-
-}
-
-
-void lpgInit() {
-    Serial.println(F("LPG init "));
-    fastInitFrame();
-    Serial.println(F("Finish LPG"));
 }
 
 boolean ecuInit() {
@@ -74,16 +65,27 @@ boolean ecuInit() {
     delay(25);
     digitalWrite(txPin, HIGH); //11
     digitalWrite(LED_BUILTIN, HIGH);
-    ecuLine.flushInput();
-    ecuLine.begin(10400);
+//    ecuLine.flushInput();
     delay(25);// or 20
 
+//    ecuLine.write(0x83);
+//    uint8_t data[8] = {0x80, 0xF1, 0x12, 0x03, 0xC1, 0xEA, 0x8F, 0xC0};
+//    sendSoftSerial(data, 8);
+//    return true;
     uint8_t data[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
 //    uint8_t data[5] = {129, 17, 241, 129, 4};
-
     sendSoftSerial(data, 5);
+    byte syncByte[1];
+    if (getSoftSerial(syncByte[1], 2000)) {
+
+        digitalWrite(pinEcu, LOW);
+        digitalWrite(pinLpg, HIGH);
+        sendSoftSerial(syncByte, 1);
+        snprintf_P(buffer, BUFLEN, PSTR("ECU Sync: %2X"), syncByte);
+        Serial.println(buffer);
+    }
+    return true;
     Serial.println("Waiting ECU response");
-    delay(25);
 
 
     String strError = "";     // and store the error description in strError.

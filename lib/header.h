@@ -243,7 +243,6 @@ boolean     getSoftSerial(uint8_t &retVal, uint32_t timeout) {
 
 boolean     getLpgSerial(uint8_t &retVal, uint32_t timeout) {
     uint32_t start = millis();
-    digitalWrite(txPin,LOW);
     while (!ecuLine.available()) {
         //Wait for a byte to arrive
         if ((millis() - start) > timeout) {
