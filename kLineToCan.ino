@@ -20,9 +20,51 @@
 #include "lib/header.h"
 #include "lib/initialization.h"
 
+void setup() {
+    Serial.begin(115200);
+    pinMode(rxPin, INPUT_PULLUP);
+    pinMode(txPin, OUTPUT);
+    pinMode(txPin, HIGH);
+    Serial.println(F("Booting ..."));
+    pinMode(pinEcu, OUTPUT);
+    pinMode(pinLpg, OUTPUT);
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, HIGH);
+    delay(5000);
+
+    // LPG init loop is ~4sec
+
+    // Send to ECU opel         0x81 0x11 0xF1 0x81 0x04
+    // Send to ECU k-line       0xC1 0x33 0xF1 0x81 0x66
+    // Response from car    0x83 0xF1 0x11 0xC1 0x8F 0xEF 0xC4
+
+    Serial.print(F("Waiting pulse ..."));
+//    unsigned long in;
+//    do {
+//        in = pulseIn(rxPin, LOW, 200000);
+//    } while (in > 24000 && in < 26000);
+
+    kLine.begin(10400);
+    kLine.write(0x00);
+    kLine.write(0x00);
+    kLine.write(0x00);
+    kLine.write(0x00);
+    kLine.write(0x00);
+    delay(25);
+    digitalWrite(txPin,HIGH);
+    Serial.println(F("Mask data ..."));
+
+//    digitalWrite(pinEcu, HIGH);
+//    digitalWrite(pinLpg, LOW);
+    uint8_t data[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
+    sendSoftSerial(data, 5);
+//    digitalWrite(pinLpg, HIGH);
+    Serial.println("End");
+
+}
 
 // Run once after Arduino start-up/reset
-void setup() {
+void setup_() {
     digitalWrite(txPin, HIGH);
     Serial.begin(115200);
     Serial.println(F("Booting ..."));
@@ -46,7 +88,7 @@ void setup() {
     // If more than 5 seconds passes between messages then we need to resend the init sequence
     // so use this timer to send 'ping' messages every 4 seconds to keep the connection alive.
     timerKeepAlive.setTimeout(4000);
-    ecuLine.begin(10400);
+    kLine.begin(10400);
     // Send Init sequence once to open communications
     digitalWrite(pinEcu, LOW);
     digitalWrite(pinLpg, HIGH);
@@ -72,9 +114,9 @@ void setup() {
 uint8_t capIndex = 0;
 
 void loop() {
-    if (ecuLine.available()) {
+    if (kLine.available()) {
         Serial.print(" :");
-        snprintf_P(buffer, BUFLEN, PSTR("%2X"), ecuLine.read());
+        snprintf_P(buffer, BUFLEN, PSTR("%2X"), kLine.read());
         Serial.print(buffer);
         Serial.print(" ");
         capIndex++;
@@ -95,7 +137,7 @@ void loop() {
 //        if (where == F("ecu")) {
         int send = Serial.readStringUntil('\n').toInt();
 //            int send = Serial.read();
-        ecuLine.write(send);
+        kLine.write(send);
         Serial.write(send);
         Serial.println(F("ECU-> "));
         Serial.write(send);
@@ -105,7 +147,7 @@ void loop() {
 /*
         if (where == F("lpg")) {
             int send = Serial.read();
-            ecuLine.write(send);
+            kLine.write(send);
             Serial.println(F("LPG-> "));
             Serial.write(send);
             return;

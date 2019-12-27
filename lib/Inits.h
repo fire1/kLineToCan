@@ -76,7 +76,7 @@ void send5BaudInit() {
                     Serial.println(buffer);
 
                     //TODO: Use sendSoftSerial instead so we don't need to duplicate the junk read-back
-                    ecuLine.write(invKey2);    // Send back inverted key2
+                    kLine.write(invKey2);    // Send back inverted key2
                     uint8_t junk;
                     getSoftSerial(junk, 1); // TX and RX share the same line so we recieve back the byte we just sent
                     //DEBUG
@@ -150,10 +150,10 @@ void send5BaudInit() {
     // We have (min) 60ms to setup our serial port before the
     // ECU starts sending back the SYNC byte (0x55)
     // Set baud rate for the Software UART defined by ISO 9141-2 (10.4 Kbaud)
-    ecuLine.begin(10400);
+    kLine.begin(10400);
 
 
-    // ecuLine.write()
+    // kLine.write()
 
     // The rest of the timing is a horrible mess of nested if statements
     // Should we have used the dreaded 'goto'?
@@ -172,7 +172,7 @@ void sendReq(byte data[], byte length, SoftwareSerial &digiSerial) {
     Serial.println(F("Sending packet... "));
     for (byte x = 0; x < length; x++) {
         //ssmLine.write(data[x]); //Use this to check with ssmLine var not with reference
-        ecuLine.write(data[x]);
+        kLine.write(data[x]);
         //delay(10);
         Serial.println(data[x]);
     }

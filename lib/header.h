@@ -35,7 +35,7 @@ const uint8_t pinLpg = A1;
 #define txPin 9
 #define rxPin 8
 // Must use the same UART pins from AltSoftSerial
-AltSoftSerial ecuLine(txPin, rxPin); // Uses Tx = 9, Rx = 8
+AltSoftSerial kLine(txPin, rxPin); // Uses Tx = 9, Rx = 8
 
 
 //SoftwareSerial lpgLine(2, 3); // RX, TX
@@ -91,9 +91,9 @@ void sendSoftSerial(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
 
     for (int i = 0; i < size; i++) {
         // Send the next byte
-        ecuLine.write(bytes[i]);
+        kLine.write(bytes[i]);
 
-        // todo try using ecuLine.flushInput()  instead getSoftSerial
+        // todo try using kLine.flushInput()  instead getSoftSerial
         // TX and RX share the same line so we recieve back the byte we just sent
         uint8_t trash;
         getSoftSerial(trash, 1);
@@ -167,7 +167,7 @@ uint8_t sendPid(uint8_t mode, uint8_t pid = 0, boolean ping = false) {
         // the byteTimeout to the start time, and wait for messageTimeout
         unsigned long startTime = millis() - 20;
 
-        while (!ecuLine.available()) {
+        while (!kLine.available()) {
             // Timeout is 55ms
             if ((millis() - startTime) >= 55) {
                 bMsgTimeout = true;   // Leave the outter 'while' loop
@@ -227,7 +227,7 @@ uint8_t getSerial() {
 */
 boolean     getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     uint32_t start = millis();
-    while (!ecuLine.available()) {
+    while (!kLine.available()) {
         //Wait for a byte to arrive
         if ((millis() - start) > timeout) {
             return true;
@@ -236,14 +236,14 @@ boolean     getSoftSerial(uint8_t &retVal, uint32_t timeout) {
     // Return the (16-bit) int as a single (8-bit) byte
     // We always check for data first with Serial.available()
     // so no need to check for an empty buffer (e.g. 0xFFFF)
-    retVal = ecuLine.read();
+    retVal = kLine.read();
     return false;
 }
 
 
 boolean     getLpgSerial(uint8_t &retVal, uint32_t timeout) {
     uint32_t start = millis();
-    while (!ecuLine.available()) {
+    while (!kLine.available()) {
         //Wait for a byte to arrive
         if ((millis() - start) > timeout) {
             return true;
@@ -252,7 +252,7 @@ boolean     getLpgSerial(uint8_t &retVal, uint32_t timeout) {
     // Return the (16-bit) int as a single (8-bit) byte
     // We always check for data first with Serial.available()
     // so no need to check for an empty buffer (e.g. 0xFFFF)
-    retVal = ecuLine.read();
+    retVal = kLine.read();
     return false;
 }
 
