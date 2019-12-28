@@ -35,7 +35,7 @@ void writeInit(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
         kLine.write(bytes[i]);
         // TX and RX share the same line so we recieve back the byte we just sent
         delay(pause); // P4 (Inter-byte spacing)
-        delayMicroseconds(100);
+        delayMicroseconds(800);
     }
     kLine.flushInput();
 }
@@ -65,6 +65,8 @@ void setup() {
 
 byte ecuData[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
 byte lpgData[7] = {0x83, 0xF1, 0x11, 0xC1, 0x8F, 0xEF, 0xC4};
+byte ecu2Data[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6};
+byte ecu2Data_[6] = {0x82, 0x11, 0xF1, 0x01, 0x00, 0x85};
 
 void loop_() {
     digitalWrite(pinEcu, LOW);
@@ -79,13 +81,25 @@ void loop() {
     while (!whileInit());
     digitalWrite(LED_BUILTIN, HIGH);
     delay(25);
-    delayMicroseconds(100);
+//    delayMicroseconds(100);
     digitalWrite(pinLpg, LOW);
     writeInit(ecuData, 5);
     digitalWrite(pinLpg, HIGH);
     digitalWrite(LED_BUILTIN, LOW);
+
     delay(56);
-    digitalWrite(pinEcu, LOW);
     digitalWrite(LED_BUILTIN, HIGH);
+
+    digitalWrite(pinLpg, HIGH);
+    digitalWrite(pinEcu, LOW);
     writeInit(lpgData, 7);
+
+    delay(1);
+    digitalWrite(pinLpg, LOW);
+    digitalWrite(pinEcu, HIGH);
+    writeInit(ecu2Data, 6);
+
+    delay(1);
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, HIGH);
 }
