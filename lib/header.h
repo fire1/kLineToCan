@@ -77,7 +77,7 @@ static boolean getSoftSerial(uint8_t &retVal, uint32_t timeout);
  * @param size
  * @param pause
  */
-void sendSoftSerial(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
+void writeInit(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
     //DEBUG
     /*
       Serial.println();

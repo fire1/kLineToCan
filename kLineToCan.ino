@@ -35,6 +35,7 @@ void writeInit(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
         kLine.write(bytes[i]);
         // TX and RX share the same line so we recieve back the byte we just sent
         delay(pause); // P4 (Inter-byte spacing)
+        delayMicroseconds(100);
     }
     kLine.flushInput();
 }
@@ -48,7 +49,7 @@ void setup() {
     pinMode(pinEcu, OUTPUT);
     pinMode(pinLpg, OUTPUT);
     digitalWrite(pinEcu, HIGH);
-    digitalWrite(pinLpg, HIGH); // deprecated
+    digitalWrite(pinLpg, HIGH);
     kLine.begin(10400);
     delay(5000);
 
@@ -62,24 +63,29 @@ void setup() {
 // Response from car    0x83 0xF1 0x11 0xC1 0x8F 0xEF 0xC4
 
 
-byte opelData[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
+byte ecuData[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
+byte lpgData[7] = {0x83, 0xF1, 0x11, 0xC1, 0x8F, 0xEF, 0xC4};
 
 void loop_() {
     digitalWrite(pinEcu, LOW);
-    writeInit(opelData, 5);
+    writeInit(lpgData, 7);
     delay(1000);
 }
 
 void loop() {
+    digitalWrite(LED_BUILTIN, LOW);
     digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, HIGH);
     while (!whileInit());
+    digitalWrite(LED_BUILTIN, HIGH);
     delay(25);
+    delayMicroseconds(100);
+    digitalWrite(pinLpg, LOW);
+    writeInit(ecuData, 5);
+    digitalWrite(pinLpg, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(56);
     digitalWrite(pinEcu, LOW);
-    writeInit(opelData, 5);
-    digitalWrite(pinEcu, HIGH);
-
-
-    if (kLine.available()) {
-        Serial.print(kLine.read(), HEX);
-    }
+    digitalWrite(LED_BUILTIN, HIGH);
+    writeInit(lpgData, 7);
 }
