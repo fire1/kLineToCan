@@ -62,10 +62,13 @@ void setup() {
 // Send to ECU k-line       0xC1 0x33 0xF1 0x81 0x66
 // Response from car    0x83 0xF1 0x11 0xC1 0x8F 0xEF 0xC4
 
+// LPG request  PID     0xC2 0x33 OxF1 0x01 0x00 0xE7
+
 
 byte ecuData[5] = {0x81, 0x11, 0xF1, 0x81, 0x04};
 byte lpgData[7] = {0x83, 0xF1, 0x11, 0xC1, 0x8F, 0xEF, 0xC4};
-byte ecu2Data[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6};
+byte ecu2Data[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6};// request pid
+byte ecu3Data[6] = {0x82, 0x11, 0xF1, 0x21, 0x01, 0xA6};
 byte ecu2Data_[6] = {0x82, 0x11, 0xF1, 0x01, 0x00, 0x85};
 
 void loop_() {
@@ -74,20 +77,7 @@ void loop_() {
     delay(1000);
 }
 
-void loop() {
-    digitalWrite(LED_BUILTIN, LOW);
-    digitalWrite(pinEcu, HIGH);
-    digitalWrite(pinLpg, HIGH);
-    while (!whileInit());
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(25);
-//    delayMicroseconds(100);
-    digitalWrite(pinLpg, LOW);
-    writeInit(ecuData, 5);
-    digitalWrite(pinLpg, HIGH);
-    digitalWrite(LED_BUILTIN, LOW);
-
-    delay(56);
+void foo(){
     digitalWrite(LED_BUILTIN, HIGH);
 
     digitalWrite(pinLpg, HIGH);
@@ -102,4 +92,26 @@ void loop() {
     delay(1);
     digitalWrite(pinEcu, HIGH);
     digitalWrite(pinLpg, HIGH);
+}
+
+void loop() {
+    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(pinEcu, HIGH);
+    digitalWrite(pinLpg, HIGH);
+    while (!whileInit());
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(25);
+    digitalWrite(pinLpg, LOW);
+    writeInit(ecuData, 5);
+    digitalWrite(pinLpg, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
+
+    delay(71);
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(pinLpg, LOW);
+    writeInit(ecu2Data, 6);
+    digitalWrite(pinLpg, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
+
+
 }

@@ -1,0 +1,14 @@
+Byte    Name                Value        Description
+-----------------------------------------------
+0    Format Byte            0x80        Address mode: with address information, physical addressing
+1    Target Byte            0x11        Address of target devide (ECU)
+2    Source Byte            0xF1        Address of source device (GEAR INDICATOR)
+3    Length Byte            0x02        Two byte following...
+4    Service ID             0x21        ReadDataByLocallIdentifier
+5    Parameter name         0x0B        "Gear position" Parameter
+6    Checksum               0xB0        Checksum = 80+11+F1+02+21+0B module 0xFF (OK)
+
+
+
+
+Message (request) sent periodically from the GEAR INDICATOR:    80 11 F1 02 21 0B B0
