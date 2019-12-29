@@ -40,6 +40,24 @@ void writeInit(uint8_t *bytes, unsigned size, uint8_t pause = 5) {
     kLine.flushInput();
 }
 
+/**
+ *
+ * @param array1
+ * @param array2
+ * @param size
+ * @return
+ */
+boolean isSame(byte *array1, byte *array2, uint8_t size) {
+    for (int i = 0; i < size + 1; i = i + 1) {
+        if (array1[i] != array2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 void setup() {
     Serial.begin(115200);
     pinMode(rxPin, INPUT);
@@ -77,7 +95,7 @@ void loop_() {
     delay(1000);
 }
 
-void foo(){
+void foo() {
     digitalWrite(LED_BUILTIN, HIGH);
 
     digitalWrite(pinLpg, HIGH);
